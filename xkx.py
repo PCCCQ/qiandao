@@ -41,10 +41,10 @@ name1 = {
     "22": "杜世千",
     "23": "孔  伟",
     "24": "张志轩",
-    
+
 }
 xinxi = {
-     "0": {"stuNum": "19L0252048", "pwd": "Lc2#0101263646"},
+    "0": {"stuNum": "19L0252048", "pwd": "Lc2#0101263646"},
     "1": {"stuNum": "19L0252020", "pwd": "Lc2#0004121024"},
     "2": {"stuNum": "19L0252077", "pwd": "Lc2#0107200025"},
     "3": {"stuNum": "19L0252078", "pwd": "Lc2#0005281668"},
@@ -75,13 +75,14 @@ xinxi = {
 def tiwen(name):
     a, p, c, d, e, f, z = '', '', '', '', '', '', ''
     y = ''
+
     param = xinxi[name]
-    newparam=str(param)
-    tname=name1[name]
- 
+    newparam = str(param)
+    tname = name1[name]
+
     try:
         response = r.post(url=url, params=param, headers=header)
-        sleep(15)
+        sleep(12)
         cookiesJAR = response.cookies  # 获取cookies
         cookies = cookiesJAR.get_dict()  # 把cookies写成字典形式
         res = r.get(url=url2, headers=header, cookies=cookies, params=param)
@@ -117,7 +118,7 @@ def tiwen(name):
     try:
         url5 = f'http://xscfw.hebust.edu.cn/survey/surveyEdit?id={sid}'
         rej = r.get(url=url5, cookies=cookies, headers=header)
-        sleep(5)
+        sleep(3)
         rej.encoding = 'utf-8'
         html2 = etree.HTML(rej.text)
         stuId = html2.xpath('//*[@id="surveyForm"]/input[2]/@value')[0]
@@ -146,38 +147,43 @@ def tiwen(name):
         f = "获取信息有误"
 
     if y == '已完成':
-        z = '早已完成填报，无需填报'
-
-
+        a = "<p style='color:deepskyblue;'>早已完成填报，无需填报</p>"
+        yes_no = 1
+        file = open("date.html", 'a', encoding='UTF-8')
+        file.write(tname + a + "<hr>")
+        file.close()
     elif y == '未完成':
         try:
             timetamp = time.mktime(time.localtime())
             timetamp = int(timetamp)
             rep = r.post(url=url3, params=data, headers=header, cookies=cookies)
             a = "填报成功"
+            yes_no=1
+
         except:
-            a = "填报出错"
-
+            a = "<p style='color: brown;'>填报出错</p>"
+            yes_no=0
+            file = open("date.html", 'a', encoding='UTF-8')
+            file.write(tname +newparam+ a + "<hr>")
+            file.close()
 
 
     else:
-        z = "填写时间未到，或填写失败"
-    file = open("yes.html", 'a', encoding='UTF-8')
-    file.close()
-    file = open("no.html", 'a', encoding='UTF-8')
-    file.close()
-    if a=="填报成功":
-        file = open("yes.html", 'a', encoding='UTF-8')
-        file.write(tname+newparam+ '==><br>' + b + '==><br>' + c + '==><br>' + d + '==><br>' + e + '==><br>' + f + '==><br>' + z + '==><br>' + a+"<br><hr>")
+        a = "<p style='color: brown;'>填写时间未到，或其他未知原因</p>"
+        yes_no=0
+        file = open("date.html", 'a', encoding='UTF-8')
+        file.write(tname +newparam+ a + "<hr>")
         file.close()
-    else:
-        file = open("no.html", 'a', encoding='UTF-8')
-        file.write(
-            tname + newparam + '==><br>' + b + '==><br>' + c + '==><br>' + d + '==><br>' + e + '==><br>' + f + '==><br>' + z + '==><br>' + a + "<br><hr>")
-        file.close()
+    return yes_no
 
 
 if __name__ == '__main__':
+    heji=0
+    yes_no=0
     for i in range(len(name1)):
-        newi=str(i)
+        newi = str(i)
         tiwen(newi)
+        heji=heji+yes_no
+    file = open("date.html", 'a', encoding='UTF-8')
+    file.write("<h1><a href='http://xscfw.hebust.edu.cn/'>今日体温填报</a></h1><hr>" + "<h2>成功:" + str(heji) + "人<br>" + "失败:" + str(25 - heji) + "人</h2><br>除去小易，共25人")
+    file.close()

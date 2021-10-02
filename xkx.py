@@ -3,6 +3,7 @@ import requests as r
 from lxml import etree
 import time
 from time import sleep
+import random
 
 timetamp = time.mktime(time.localtime())
 timetamp = int(timetamp)
@@ -75,7 +76,8 @@ xinxi = {
 def tiwen(name):
     a, p, c, d, e, f, z = '', '', '', '', '', '', ''
     y = ''
-
+    c1=random.randrange(362,369)/10
+    c2=random.randrange(362,369)/10
     param = xinxi[name]
     newparam = str(param)
     tname = name1[name]
@@ -135,9 +137,9 @@ def tiwen(name):
             "qid": qid,
             "location": '',
             "c0": "不超过37.3℃，正常",
-            "c1": '36.5',
+            "c1": c1,
             "c3": "不超过37.3℃，正常",
-            "c4": '36.5',
+            "c4": c2,
             "c6": "健康",
         }
         f = "获取信息成功"

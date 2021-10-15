@@ -2,8 +2,7 @@ name: tiwentianbao
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '6 1 * * *'
+
 jobs:
   build:
 

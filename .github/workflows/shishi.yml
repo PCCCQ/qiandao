@@ -25,7 +25,7 @@ jobs:
           # 这些sectret的环境变量需要配置在setting中的secret下
         username: ${{ secrets.EMAILNAME }}
         password: ${{ secrets.EMAILPOP }}
-        subject: 成功体温填报
+        subject: 体温填报
         body: file://date.html
         to: ${{ secrets.QQEMAIL }}
         from: GitHub Actions

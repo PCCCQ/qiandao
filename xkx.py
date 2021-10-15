@@ -185,7 +185,5 @@ if __name__ == '__main__':
     for i in range(len(name1)):
         newi = str(i)
         tiwen(newi)
-        heji=heji+yes_no
-    file = open("date.html", 'a', encoding='UTF-8')
-    file.write("<h1><a href='http://xscfw.hebust.edu.cn/'>今日体温填报</a></h1><hr>" + "<h2>成功:" + str(heji) + "人<br>" + "失败:" + str(25 - heji) + "人</h2><br>除去小易，共25人")
-    file.close()
+        
+   
